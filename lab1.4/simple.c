@@ -1,31 +1,44 @@
 #include <linux/init.h>
 #include <linux/module.h>
-#include <linux/kernel.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <system/utsname.h>
+#include <linux/jiffies.h>
+#include <linux/utsname.h>
 
+// Custom functions.
+void uptime(void);
+void getSystemInfo(void);
 
-long getUptime(){
-	struct sysinfo s_info;
-	return s_info.uptime;
-}
-
-/* This function is called when the module is loaded. */
+// This function is called when the module is loaded.
 int simple_init(void)
 {
-       printk(KERN_INFO "Loading Module by Karol\n");
-       printk(KERN_INFO "The module was initialized by Karol!\n");
-       printk(KERN_INFO "Uptime: %ld\n", getUptime());
-       
-
+       printk(KERN_INFO "Loading Module by Karol!\n");
+       uptime();
+       getSystemInfo();
        return 0;
 }
 
 /* This function is called when the module is removed. */
 void simple_exit(void) {
-	printk(KERN_INFO "Removing Module\n");
 	printk(KERN_INFO "The module was removed by Karol!\n");
+}
+
+// This functions gets the uptime
+void uptime() {
+  printk("Uptime: %i\n", jiffies_to_msecs(get_jiffies_64())/1000);
+}
+
+// This function gets the general system information
+void getSystemInfo(){  
+  struct new_utsname *buf;
+  buf = utsname();
+
+  printk("Nodename: %s\n",buf->nodename);
+  printk("Machine: %s\n",buf->machine);
+  printk("Sysname: %s\n",buf->sysname);
+  printk("Release: %s\n",buf->release);
+  printk("Version: %s\n",buf->version);
+#ifdef __linux__
+  printk("Domain Name: %s\n", buf->domainname); // GNU extension
+#endif
 }
 
 /* Macros for registering module entry and exit points. */
