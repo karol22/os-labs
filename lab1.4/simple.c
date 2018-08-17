@@ -3,9 +3,20 @@
 #include <linux/jiffies.h>
 #include <linux/utsname.h>
 
+struct Student {
+	int ID;
+	char* name;
+	int age;
+
+};
+int nextStudent=0;
+struct Student students[10];
+
 // Custom functions.
 void uptime(void);
 void getSystemInfo(void);
+void add(int, char*, int);
+void list(void);
 
 // This function is called when the module is loaded.
 int simple_init(void)
@@ -13,6 +24,10 @@ int simple_init(void)
        printk(KERN_INFO "Loading Module by Karol!\n");
        uptime();
        getSystemInfo();
+       add(1, "Karol", 20);
+       add(2, "Amanda", 16);
+       add(3, "Juan", 14);
+       list();
        return 0;
 }
 
@@ -40,6 +55,25 @@ void getSystemInfo(){
   printk("Domain Name: %s\n", buf->domainname); // GNU extension
 #endif
 }
+
+// This function adds an student to the array
+void add(int id, char* newname, int a){
+	students[nextStudent].ID=id;
+	students[nextStudent].name=newname;
+	students[nextStudent].age=a;
+	nextStudent++;
+}
+
+// This function lists all the students
+void list(void){
+    	int i=0;
+	printk("Listing all students: \n");
+    	for(i; i<nextStudent; i++){
+        	printk("    ID: %u, Name: %s, Age: %u years\n", students[i].ID, students[i].name, students[i].age);
+    	}
+	printk("Done! \n");
+}
+
 
 /* Macros for registering module entry and exit points. */
 module_init( simple_init );
