@@ -5,7 +5,7 @@
 
 #define MAX_LINE		80 /* 80 chars per line, per command */
 char hist[10][MAX_LINE];
-int counter = 0;
+int counter=0;
 
 void inputHandler(char *, char **,int *);
 void historyHandler();
@@ -35,32 +35,32 @@ int main(void){
 
 void inputHandler(char line[], char *args[],int *concurrent)
 {
-    int length, index=0, next=-1;
+    int length, index=0, next=-1, i=0;
     length=read(STDIN_FILENO, line, MAX_LINE);
     if (length==0)
         return;
-    for (int i=0; i<length; i++){
-      if(line[i]=='\t'){
+    while(i<length){
+      if(line[i]==' '){
         if(next!=-1){
-            args[index]=&line[next];
-            index++;
+          args[index]=&line[next];
+          index++;
         }
-        line[i]=0;
+        line[i]='\0';
         next=-1;
       }else if(line[i]=='\n'){
-        if(next!=-1){
-            args[index]=&line[next];
-            index++;
+        if (next !=-1){
+          args[index]=&line[next];
+          index++;
         }
-        line[i]=0;
+        line[i]='\0';
         args[index]=NULL;
       }else if(line[i]=='&'){
         *concurrent=1;
         line[i]='\0';
-      }else if(line[i]!=' '){
-        if(next==-1)
-            next=i;
+      }else if (next==-1){
+        next=i;
       }
+      i++;
     }
     args[index]=NULL;
     if(strcmp(args[0],"history")==0){
@@ -81,7 +81,7 @@ void inputHandler(char line[], char *args[],int *concurrent)
     				}
     		}
     }
-    for(int i=9; i>0; i--)
+    for(i=9; i>0; i--)
     	strcpy(hist[i], hist[i-1]);
     strcpy(hist[0],line);
     counter++;
