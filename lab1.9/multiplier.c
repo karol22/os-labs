@@ -48,26 +48,10 @@ int main(int argc, char *argv[]){
 	int NUM_BUFFERS=atoi(a);
 	printf("The number of buffers is %d\n", NUM_BUFFERS);
 
-	long* matA;
-	long *matB;
-	matA=(long*)malloc(4000000*sizeof(long));
-	matB=(long*)malloc(4000000*sizeof(long));
+	long* matA=readMatrix("matA.dat");
+	long* matB=readMatrix("matB.dat");
 	
-	FILE *fa;
-	fa=fopen("matA.dat", "r");
-	for(i=0; i<4000000; i++){
-		fscanf(fa, "%ld", &matA[i]);	
-	}
-	fclose(fa);
-
-	FILE *fb;
-	fb=fopen("matB.dat", "r");
-	for(i=0; i<4000000; i++){
-		fscanf(fb, "%ld", &matB[i]);	
-	}
-	fclose(fb);
-	
-	//printf("%ld",matA[1597829]+matB[1597829]); //the scan works
+	printf("%ld",matA[1597829]+matB[1597829]); //the scan works
 
 
 free(matA);
