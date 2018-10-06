@@ -48,7 +48,7 @@ void take_fork(int phils) {
     // Define as hungry
     state[phils] = HUNGRY; 
   
-    printf("Philosopher %d is Hungry\n", phils + 1); 
+    printf("Philosopher %d is hungry\n", phils + 1); 
   
     //Eat if neighbours are not eating 
     test(phils); 
@@ -69,7 +69,7 @@ void put_fork(int phils) {
     // state that thinking 
     state[phils] = THINKING; 
   
-    printf("Philosopher %d putting fork %d and %d down\n", 
+    printf("Philosopher %d putting down the forks #%d and #%d\n", 
            phils + 1, (phils+4)%N+1, phils + 1); 
     printf("Philosopher %d is thinking\n", phils + 1); 
   
